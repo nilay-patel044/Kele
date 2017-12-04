@@ -11,4 +11,6 @@ class Kele
     raise "Invalid Login Credentials" if response.code == 401
     puts @auth_token
   end
+
+  
 end
