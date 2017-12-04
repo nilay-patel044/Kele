@@ -1,4 +1,5 @@
 require 'httparty'
+require 'json'
 
 class Kele
   include HTTParty
@@ -12,5 +13,15 @@ class Kele
     puts @auth_token
   end
 
-  
+  def get_me
+    response = self.class.get("/users/me", headers: { "authorization" => @auth_token })
+    @auth_token = response ['auth_token']
+    @user_data = JSON.parse(response.body)
+    # @user_data.keys.each do |key|
+    #   self.class.send(:define_method, key.to_sym) do
+    #     @user_data[key]
+    #   end
+    # end
+  end
+
 end
