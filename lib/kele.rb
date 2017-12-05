@@ -1,9 +1,9 @@
 require 'httparty'
 require 'json'
-
+require './lib/roadmap'
 class Kele
   include HTTParty
-
+  include Roadmap
   base_uri 'https://www.bloc.io/api/v1'
 
   def initialize(email, password)
@@ -21,9 +21,8 @@ class Kele
 
   def get_mentor_availability(mentor_id)
     lets_meet = []
-    mentor_id = get_me['current_enrollment']['mentor_id']
     response = self.class.get("/mentors/#{mentor_id}/student_availability", headers: { "authorization" => @auth_token })
-    @auth_token = response ['auth_token']
+
     if response.code != 200
       console.log(response.code)
     else
