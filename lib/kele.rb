@@ -34,4 +34,31 @@ class Kele
       lets_meet
     end
   end
+
+  def get_messages(some_id = nil)
+    if some_id.nil?
+      response = self.class.get("/message_threads", headers: { "authorization" => @auth_token })
+    else
+      response = self.class.get("/message_threads", body: { page: some_id }, headers: { "authorization" => @auth_token })
+    end
+
+    @message_threads = JSON.parse(response.body)
+  end
+
+
+
+  def create_message(recipient_id, subject, message, token = nil)
+    new_message= "{
+
+      'sender': #{get_me['email']},
+      'recipient_id': #{recipient_id},
+      'token': #{token},
+      'subject': #{subject},
+      'stripped_text': #{message}
+    } "
+
+    response = self.class.post('/messages', header: { "authorization" => @auth_token }, body: new_message)
+
+    puts "Message Successfully Sent!" if response.success?
+  end
 end
