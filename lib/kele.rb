@@ -72,7 +72,19 @@ class Kele
         assignment_commit_link: commit_link,
         comment: comment
       })
-    puts "Checkpoint Successfully Submitted!" if response.success?
     JSON.parse(response.body)
+    puts "Checkpoint Successfully Submitted!" if response.success?
+  end
+
+  def update_submission(submission, branch = nil, commit_link = nil, checkpoint, comment = nil, enrollment)
+    response = self.class.put("/checkpoint_submissions/#{submission}", headers: { "authorization" => @auth_token }, body:{
+        enrollment_id: enrollment,
+        checkpoint_id: checkpoint,
+        assignment_branch: branch,
+        assignment_commit_link: commit_link,
+        comment: comment
+      })
+    JSON.parse(response.body)
+    puts "Checkpoint Updated Submitted!" if response.success?  
   end
 end
