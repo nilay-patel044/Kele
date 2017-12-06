@@ -61,4 +61,18 @@ class Kele
 
     puts "Message Successfully Sent!" if response.success?
   end
+
+
+  def create_submission(checkpoint, branch, commit_link, comment)
+
+    response = self.class.post('/checkpoint_submissions', headers: { "authorization" => @auth_token }, body:{
+        enrollment_id: get_me['current_enrollment']['id'],
+        checkpoint_id: checkpoint,
+        assignment_branch: branch,
+        assignment_commit_link: commit_link,
+        comment: comment
+      })
+    puts "Checkpoint Successfully Submitted!" if response.success?
+    JSON.parse(response.body)
+  end
 end
